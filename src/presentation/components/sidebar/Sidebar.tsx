@@ -1,38 +1,67 @@
-// src/presentation/components/sidebar/Sidebar.tsx
+import { useAuth } from "../../hooks/useAuth";
+import { signOut } from "firebase/auth";
+import { auth } from "../../../data/FirebaseConfig";
 import { NavLink } from "react-router-dom";
+import {LogOut, User } from "lucide-react";
 
-const Sidebar = () => {
-  const menuItems = [
-    { path: "/dashboard", label: "Dashboard", icon: "📊" },
-    { path: "/settings", label: "Configuración", icon: "⚙️" },
-  ];
+const SidebarHorizontal = () => {
+  const { user } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
 
   return (
-    <aside className="w-56 bg-white border-r border-gray-200 h-screen hidden sm:flex flex-col">
-      <div className="p-6 text-green-600 font-bold text-lg">EcoTrack</div>
+    <nav className="navbar navbar-expand-lg navbar-light bg-white shadow-sm px-4">
+      <div className="container-fluid d-flex justify-content-between align-items-center">
+        <div className="d-flex align-items-center gap-3">
+          <a href="#" className="navbar-brand fw-bold text-success d-flex align-items-center gap-2">
+            🌿 EcoTrack
+          </a>
 
-      <nav className="flex-1">
-        {menuItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-6 py-3 text-gray-700 hover:bg-green-50 hover:text-green-600 transition ${
-                isActive ? "bg-green-100 text-green-700 font-semibold" : ""
-              }`
-            }
+          <div className="d-none d-lg-flex align-items-center">
+            <NavLink
+              to="/dashboard"
+              className={({ isActive }) =>
+                `btn btn-link text-decoration-none ${isActive ? "text-success" : "text-secondary"}`
+              }
+            >
+              Inicio
+            </NavLink>
+            <NavLink
+              to="/habits"
+              className={({ isActive }) =>
+                `btn btn-link text-decoration-none ${isActive ? "text-success" : "text-secondary"}`
+              }
+            >
+              Registrar hábitos
+            </NavLink>
+          </div>
+        </div>
+
+        <div className="d-flex align-items-center gap-3">
+          {user && (
+            <div className="d-flex align-items-center gap-2">
+              <User size={18} className="text-secondary" />
+              <span className="text-secondary small d-none d-md-inline">{user.email}</span>
+            </div>
+          )}
+
+          <button
+            onClick={handleLogout}
+            className="btn btn-success text-white"
           >
-            <span>{item.icon}</span>
-            {item.label}
-          </NavLink>
-        ))}
-      </nav>
-
-      <footer className="p-4 text-xs text-gray-400 text-center border-t">
-        v0.1 MVP
-      </footer>
-    </aside>
+            <LogOut size={16} className="me-2" />
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+    </nav>
   );
 };
 
-export default Sidebar;
+export default SidebarHorizontal;
