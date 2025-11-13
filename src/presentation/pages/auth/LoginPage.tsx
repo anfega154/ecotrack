@@ -2,106 +2,300 @@ import { useState } from "react";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth } from "../../../data/FirebaseConfig";
 import { Link, useNavigate } from "react-router-dom";
-import { Leaf } from "lucide-react";
+import { Leaf, Mail, Lock, Eye, EyeOff, AlertCircle, Sparkles } from "lucide-react";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    setIsLoading(true);
+    
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate("/dashboard");
     } catch {
-      setError("Credenciales inválidas");
+      setError("Credenciales inválidas. Por favor, verifica tus datos.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleGoogleLogin = async () => {
+    setError("");
+    setIsLoading(true);
+    
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       navigate("/dashboard");
     } catch {
       setError("Error al iniciar sesión con Google");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div
       className="d-flex align-items-center justify-content-center vh-100 vw-100"
-      style={{ backgroundColor: "#374151", overflow: "hidden" }}
+      style={{ 
+        backgroundColor: "#0f172a", 
+        overflow: "hidden",
+        position: "relative"
+      }}
     >
+      {/* Animated Background Gradient */}
+      <div 
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "radial-gradient(circle at 20% 50%, rgba(16, 185, 129, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)",
+          animation: "pulse 8s ease-in-out infinite",
+          pointerEvents: "none"
+        }}
+      />
+      
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 0.5; }
+          50% { opacity: 0.8; }
+        }
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+        .animate-fadeInUp {
+          animation: fadeInUp 0.8s ease-out;
+        }
+        .animate-slideInLeft {
+          animation: slideInLeft 0.8s ease-out;
+        }
+        .input-focus-ring {
+          transition: all 0.3s ease;
+        }
+        .input-focus-ring:focus {
+          box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+          border-color: #10b981 !important;
+        }
+        .btn-hover-lift {
+          transition: all 0.3s ease;
+        }
+        .btn-hover-lift:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+        }
+        .btn-hover-lift:active {
+          transform: translateY(0);
+        }
+      `}</style>
+
       <div
         className="row g-0 w-100 h-100 justify-content-center align-items-center"
-        style={{ maxWidth: "none", margin: 0 }}
+        style={{ maxWidth: "none", margin: 0, position: "relative", zIndex: 1 }}
       >
-        <div className="col-md-6 col-12 p-0 h-100">
-          <img
-            src="https://i.pinimg.com/1200x/7d/b2/72/7db2721e8362fa167200981b1e243277.jpg"
-            alt="login visual"
-            className="img-fluid h-100 w-100"
-            style={{ objectFit: "cover" }}
-          />
-        </div>
-        <div
-          className="col-md-6 col-12 d-flex align-items-center justify-content-center bg-dark text-white h-100 p-5"
-        >
-          <div style={{ maxWidth: "400px", width: "100%" }}>
-            <div className="d-flex align-items-center mb-4">
-              <Leaf className="text-success me-2" size={40} />
-              <h2 className="fw-bold mb-0">EcoTrack</h2>
+        {/* Image Section with Overlay */}
+        <div className="col-md-6 col-12 p-0 h-100 position-relative animate-slideInLeft">
+          <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
+            <img
+              src="https://i.pinimg.com/1200x/7d/b2/72/7db2721e8362fa167200981b1e243277.jpg"
+              alt="login visual"
+              className="img-fluid h-100 w-100"
+              style={{ objectFit: "cover", filter: "brightness(0.8)" }}
+            />
+            {/* Gradient Overlay */}
+            <div style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: "linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.3) 100%)",
+              pointerEvents: "none"
+            }} />
+            {/* Floating Quote */}
+            <div style={{
+              position: "absolute",
+              bottom: "10%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              textAlign: "center",
+              color: "white",
+              padding: "1.5rem",
+              maxWidth: "80%"
+            }}>
+              <Sparkles size={32} className="mb-3" style={{ opacity: 0.9 }} />
+              <h3 className="fw-bold mb-2" style={{ textShadow: "2px 2px 4px rgba(0,0,0,0.3)" }}>
+                Tu impacto, tu futuro
+              </h3>
+              <p style={{ fontSize: "0.95rem", opacity: 0.95, textShadow: "1px 1px 2px rgba(0,0,0,0.3)" }}>
+                Únete a miles de personas creando un mundo más sostenible
+              </p>
             </div>
+          </div>
+        </div>
 
-            <h5 className="mb-4">Inicia sesión en tu cuenta</h5>
+        {/* Form Section */}
+        <div
+          className="col-md-6 col-12 d-flex align-items-center justify-content-center text-white h-100 p-5 animate-fadeInUp"
+          style={{ backgroundColor: "#1e293b" }}
+        >
+          <div style={{ maxWidth: "440px", width: "100%" }}>
+            {/* Logo Header */}
+            <div className="d-flex align-items-center mb-2">
+              <div className="p-2 rounded-3" style={{ backgroundColor: "rgba(16, 185, 129, 0.15)" }}>
+                <Leaf className="text-success" size={36} />
+              </div>
+              <h2 className="fw-bold mb-0 ms-3">EcoTrack</h2>
+            </div>
+            
+            <p className="mb-4" style={{ fontSize: "0.9rem", color: "#94a3b8" }}>
+              Monitorea y mejora tu huella ecológica
+            </p>
+
+            <h4 className="mb-1 fw-bold text-white">Bienvenido de nuevo</h4>
+            <p className="mb-4" style={{ color: "#cbd5e1" }}>Inicia sesión para continuar tu viaje ecológico</p>
 
             <form onSubmit={handleLogin}>
+              {/* Email Input with Icon */}
               <div className="mb-3">
-                <label className="form-label">Correo electrónico</label>
+                <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
+                  <Mail size={16} className="me-2" />
+                  Correo electrónico
+                </label>
                 <input
                   type="email"
-                  className="form-control bg-secondary border-0 text-white"
+                  className="form-control input-focus-ring border-0 text-white py-3"
+                  style={{ 
+                    backgroundColor: "#334155",
+                    borderRadius: "0.75rem",
+                    fontSize: "0.95rem"
+                  }}
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="tu@correo.com"
+                  required
                 />
               </div>
 
-              <div className="mb-4">
-                <label className="form-label">Contraseña</label>
-                <input
-                  type="password"
-                  className="form-control bg-secondary border-0 text-white"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                />
+              {/* Password Input with Toggle */}
+              <div className="mb-3">
+                <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
+                  <Lock size={16} className="me-2" />
+                  Contraseña
+                </label>
+                <div className="position-relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="form-control input-focus-ring border-0 text-white py-3"
+                    style={{ 
+                      backgroundColor: "#334155",
+                      borderRadius: "0.75rem",
+                      fontSize: "0.95rem",
+                      paddingRight: "3rem"
+                    }}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="btn btn-link position-absolute"
+                    style={{ 
+                      right: "0.5rem", 
+                      top: "50%", 
+                      transform: "translateY(-50%)",
+                      color: "#94a3b8"
+                    }}
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
               </div>
 
+              {/* Error Message with Icon */}
               {error && (
-                <div className="alert alert-danger py-2 text-center">{error}</div>
+                <div 
+                  className="alert d-flex align-items-center py-3 mb-3" 
+                  style={{ 
+                    backgroundColor: "rgba(239, 68, 68, 0.15)", 
+                    border: "1px solid rgba(239, 68, 68, 0.3)",
+                    borderRadius: "0.75rem",
+                    color: "#fca5a5"
+                  }}
+                >
+                  <AlertCircle size={18} className="me-2 flex-shrink-0" />
+                  <span style={{ fontSize: "0.9rem" }}>{error}</span>
+                </div>
               )}
 
+              {/* Login Button */}
               <button
                 type="submit"
-                className="btn btn-success w-100 py-2 fw-semibold"
+                disabled={isLoading}
+                className="btn btn-success w-100 py-3 fw-semibold btn-hover-lift mb-3"
+                style={{ 
+                  borderRadius: "0.75rem",
+                  fontSize: "1rem",
+                  position: "relative"
+                }}
               >
-                Iniciar sesión
+                {isLoading ? (
+                  <span className="d-flex align-items-center justify-content-center">
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Iniciando sesión...
+                  </span>
+                ) : (
+                  "Iniciar sesión"
+                )}
               </button>
 
-              <div className="d-flex align-items-center my-3">
-                <hr className="flex-grow-1" />
-                <span className="mx-3 text-muted">o</span>
-                <hr className="flex-grow-1" />
+              {/* Divider */}
+              <div className="d-flex align-items-center my-4">
+                <hr className="flex-grow-1" style={{ borderColor: "#475569", opacity: 0.5 }} />
+                <span className="mx-3" style={{ fontSize: "0.85rem", color: "#e2e8f0" }}>o continúa con</span>
+                <hr className="flex-grow-1" style={{ borderColor: "#475569", opacity: 0.5 }} />
               </div>
 
+              {/* Google Login Button */}
               <button
                 type="button"
                 onClick={handleGoogleLogin}
-                className="btn btn-outline-light w-100 py-2 fw-semibold d-flex align-items-center justify-content-center"
+                disabled={isLoading}
+                className="btn w-100 py-3 fw-semibold d-flex align-items-center justify-content-center btn-hover-lift"
+                style={{
+                  backgroundColor: "#334155",
+                  color: "white",
+                  border: "1px solid #475569",
+                  borderRadius: "0.75rem"
+                }}
               >
                 <svg
                   className="me-2"
@@ -130,29 +324,55 @@ const LoginPage = () => {
                 Continuar con Google
               </button>
 
-              <div className="text-center mt-4">
+              {/* Forgot Password */}
+              <div className="text-center mt-3 mb-4">
                 <Link
                   to="#"
-                  className="text-muted text-decoration-none d-block mb-2"
+                  className="text-decoration-none"
+                  style={{ 
+                    color: "#10b981",
+                    fontSize: "0.9rem",
+                    transition: "color 0.2s"
+                  }}
                 >
-                 <span className="text-white">¿Olvidaste tu contraseña?</span>{" "}
+                  ¿Olvidaste tu contraseña?
                 </Link>
-                <p className="text-muted">
-                  <span className="text-white">¿No tienes una cuenta?</span>{" "}
-                  <Link
-                    to="/register"
-                    className="text-success fw-bold text-decoration-none"
+              </div>
+
+              {/* Divider Line */}
+              <hr style={{ borderColor: "#475569", opacity: 0.3, margin: "2rem 0" }} />
+
+              {/* Sign Up Link */}
+              <p className="text-center mb-3" style={{ fontSize: "0.95rem" }}>
+                <span style={{ color: "#e2e8f0" }}>¿No tienes una cuenta?</span>{" "}
+                <Link
+                  to="/register"
+                  className="text-success fw-semibold text-decoration-none"
+                  style={{ 
+                    transition: "all 0.2s",
+                  }}
+                >
+                  Regístrate gratis
+                </Link>
+              </p>
+
+              {/* Footer Links */}
+              <div className="text-center">
+                <small style={{ color: "#94a3b8", fontSize: "0.8rem" }}>
+                  <Link 
+                    to="#" 
+                    className="text-decoration-none me-3" 
+                    style={{ color: "#94a3b8", transition: "color 0.2s" }}
                   >
-                    Regístrate aquí
-                  </Link>
-                </p>
-                <small className="text-secondary">
-                  <Link to="#" className="text-decoration-none me-2">
                     Términos de uso
                   </Link>
-                  ·
-                  <Link to="#" className="text-decoration-none ms-2">
-                    Política de privacidad
+                  <span>·</span>
+                  <Link 
+                    to="#" 
+                    className="text-decoration-none ms-3"
+                    style={{ color: "#94a3b8", transition: "color 0.2s" }}
+                  >
+                    Privacidad
                   </Link>
                 </small>
               </div>
