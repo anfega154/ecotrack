@@ -48,6 +48,14 @@ const SidebarHorizontal = () => {
             >
               📋 Histórico
             </NavLink>
+            <NavLink
+              to="/achievements"
+              className={({ isActive }) =>
+                `btn btn-link text-decoration-none ${isActive ? "text-success fw-semibold" : "text-secondary"}`
+              }
+            >
+              🏆 Logros
+            </NavLink>
           </div>
         </div>
 
