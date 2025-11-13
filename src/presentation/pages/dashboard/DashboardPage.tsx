@@ -13,8 +13,25 @@ import {
   YAxis,
   ResponsiveContainer,
   CartesianGrid,
+  LineChart,
+  Line,
+  Legend,
 } from "recharts";
-import { Leaf, TrendingUp, CalendarDays, Zap } from "lucide-react";
+import { 
+  Leaf, 
+  TrendingUp, 
+  CalendarDays, 
+  Zap, 
+  Car,
+  Bike,
+  Bus,
+  Clock,
+  Activity,
+  Calendar,
+  Award,
+  TreePine,
+  FileText
+} from "lucide-react";
 
 const DashboardPage = () => {
   const { user } = useAuth();
@@ -75,50 +92,147 @@ const DashboardPage = () => {
 
   const daysRegistered = [...new Set(habits.map((h) => h.date))].length;
 
+  // Métricas adicionales
+  const carDays = habits.filter((h) => h.transport === "carro").length;
+  const bikeDays = habits.filter((h) => h.transport === "bici").length;
+  const publicTransportDays = habits.filter((h) => h.transport === "publico").length;
+  const motoDays = habits.filter((h) => h.transport === "moto").length;
+  
+  const laboralDays = habits.filter((h) => h.dayType === "laboral").length;
+  const weekendDays = habits.filter((h) => h.dayType === "fin de semana").length;
+  
+  const highEnergyDays = habits.filter((h) => h.energy === "mucho").length;
+  const mediumEnergyDays = habits.filter((h) => h.energy === "medio").length;
+  const lowEnergyDays = habits.filter((h) => h.energy === "poco").length;
+
+  const ecoScore = Math.max(0, Math.min(100, 
+    ((bikeDays + publicTransportDays) * 10) + (lowEnergyDays * 5) - (carDays * 5) - (highEnergyDays * 3)
+  ));
+
+  const weeklyTrend = habits
+    .reduce((acc: any[], habit) => {
+      const existing = acc.find(item => item.date === habit.date);
+      if (existing) {
+        existing.count += 1;
+      } else {
+        acc.push({ date: habit.date, count: 1 });
+      }
+      return acc;
+    }, [])
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    .slice(-7);
+
   return (
     <div
-      className="min-vh-100 vw-100 d-flex flex-column align-items-center justify-content-start p-5 text-white"
+      className="min-vh-100 vw-100 d-flex flex-column align-items-center justify-content-start p-4 text-white"
       style={{ backgroundColor: "#111827" }}
     >
+      {/* Header */}
       <div className="d-flex align-items-center mb-4">
         <Leaf className="text-success me-2" size={36} />
-        <h2 className="fw-bold">EcoTrack Dashboard</h2>
+        <h2 className="fw-bold mb-0">EcoTrack Dashboard</h2>
       </div>
 
-      <div className="w-100 d-flex flex-wrap justify-content-center gap-4 mb-5">
-        <div className="bg-dark rounded-4 p-4 shadow-lg" style={{ width: "280px" }}>
-          <TrendingUp className="text-success mb-2" size={28} />
-          <h5 className="fw-semibold">Nivel de impacto</h5>
-          <p className="fs-5">{impactLevel || "Cargando..."}</p>
+      {/* Métricas principales - 4 tarjetas */}
+      <div className="w-100 d-flex flex-wrap justify-content-center gap-3 mb-4" style={{ maxWidth: "1400px" }}>
+        <div className="bg-dark rounded-4 p-4 shadow-lg" style={{ minWidth: "240px", flex: "1 1 240px" }}>
+          <div className="d-flex justify-content-between align-items-start">
+            <div>
+              <div className="text-white-50 small mb-1">Nivel de impacto</div>
+              <h5 className="fw-bold mb-0">{impactLevel || "Cargando..."}</h5>
+            </div>
+            <TrendingUp className="text-success" size={28} />
+          </div>
         </div>
 
-        <div className="bg-dark rounded-4 p-4 shadow-lg" style={{ width: "280px" }}>
-          <CalendarDays className="text-success mb-2" size={28} />
-          <h5 className="fw-semibold">Días registrados</h5>
-          <p className="fs-5">{daysRegistered}</p>
+        <div className="bg-dark rounded-4 p-4 shadow-lg" style={{ minWidth: "240px", flex: "1 1 240px" }}>
+          <div className="d-flex justify-content-between align-items-start">
+            <div>
+              <div className="text-white-50 small mb-1">EcoScore</div>
+              <h5 className="fw-bold mb-0 text-success">{ecoScore}/100</h5>
+            </div>
+            <Award className="text-success" size={28} />
+          </div>
         </div>
 
-        <div className="bg-dark rounded-4 p-4 shadow-lg" style={{ width: "280px" }}>
-          <Zap className="text-success mb-2" size={28} />
-          <h5 className="fw-semibold">Hábitos totales</h5>
-          <p className="fs-5">{habits.length}</p>
+        <div className="bg-dark rounded-4 p-4 shadow-lg" style={{ minWidth: "240px", flex: "1 1 240px" }}>
+          <div className="d-flex justify-content-between align-items-start">
+            <div>
+              <div className="text-white-50 small mb-1">Días registrados</div>
+              <h5 className="fw-bold mb-0">{daysRegistered}</h5>
+            </div>
+            <CalendarDays className="text-success" size={28} />
+          </div>
+        </div>
+
+        <div className="bg-dark rounded-4 p-4 shadow-lg" style={{ minWidth: "240px", flex: "1 1 240px" }}>
+          <div className="d-flex justify-content-between align-items-start">
+            <div>
+              <div className="text-white-50 small mb-1">Hábitos totales</div>
+              <h5 className="fw-bold mb-0">{habits.length}</h5>
+            </div>
+            <Zap className="text-success" size={28} />
+          </div>
         </div>
       </div>
 
-      {/* Gráficos */}
-      <div className="row w-100 justify-content-center mb-5">
-        <div className="col-md-6 col-12 mb-4">
+      {/* Métricas secundarias - 4 tarjetas más pequeñas */}
+      <div className="w-100 d-flex flex-wrap justify-content-center gap-3 mb-4" style={{ maxWidth: "1400px" }}>
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "180px", flex: "1 1 180px" }}>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <Car size={20} className="text-danger" />
+            <span className="text-white-50 small">Días en carro</span>
+          </div>
+          <div className="fs-5 fw-semibold">{carDays}</div>
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "180px", flex: "1 1 180px" }}>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <Bike size={20} className="text-success" />
+            <span className="text-white-50 small">Días en bici</span>
+          </div>
+          <div className="fs-5 fw-semibold">{bikeDays}</div>
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "180px", flex: "1 1 180px" }}>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <Bus size={20} className="text-info" />
+            <span className="text-white-50 small">Transporte público</span>
+          </div>
+          <div className="fs-5 fw-semibold">{publicTransportDays}</div>
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "180px", flex: "1 1 180px" }}>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <TreePine size={20} className="text-success" />
+            <span className="text-white-50 small">Días eco-friendly</span>
+          </div>
+          <div className="fs-5 fw-semibold text-success">{bikeDays + publicTransportDays}</div>
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "180px", flex: "1 1 180px" }}>
+          <div className="d-flex align-items-center gap-2 mb-1">
+            <Car size={20} className="text-warning" />
+            <span className="text-white-50 small">Días en moto</span>
+          </div>
+          <div className="fs-5 fw-semibold">{motoDays}</div>
+        </div>
+      </div>
+
+      {/* Gráficos - 3 columnas */}
+      <div className="row w-100 justify-content-center mb-4 gx-3" style={{ maxWidth: "1400px" }}>
+        <div className="col-lg-4 col-md-6 col-12 mb-3">
           <div className="bg-dark p-4 rounded-4 shadow-lg h-100">
-            <h5 className="mb-3 text-center text-success">🚗 Transporte utilizado</h5>
-            <ResponsiveContainer width="100%" height={250}>
+            <h6 className="mb-3 text-center fw-semibold">🚗 Transporte utilizado</h6>
+            <ResponsiveContainer width="100%" height={220}>
               <PieChart>
                 <Pie
                   data={transportChart}
                   dataKey="value"
                   cx="50%"
                   cy="50%"
-                  outerRadius={90}
-                  label
+                  outerRadius={75}
+                  label={(entry: any) => entry.value > 0 ? `${entry.name}: ${entry.value}` : ''}
                 >
                   {transportChart.map((_, i) => (
                     <Cell key={i} fill={COLORS[i % COLORS.length]} />
@@ -130,67 +244,153 @@ const DashboardPage = () => {
           </div>
         </div>
 
-        <div className="col-md-6 col-12 mb-4">
+        <div className="col-lg-4 col-md-6 col-12 mb-3">
           <div className="bg-dark p-4 rounded-4 shadow-lg h-100">
-            <h5 className="mb-3 text-center text-success">💡 Consumo eléctrico</h5>
-            <ResponsiveContainer width="100%" height={250}>
+            <h6 className="mb-3 text-center fw-semibold">💡 Consumo eléctrico</h6>
+            <ResponsiveContainer width="100%" height={220}>
               <BarChart data={energyChart}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                <XAxis dataKey="name" stroke="#9ca3af" />
+                <XAxis dataKey="name" stroke="#9ca3af" tick={{ fontSize: 12 }} />
                 <YAxis stroke="#9ca3af" />
-                <Tooltip />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                />
                 <Bar dataKey="value" fill="#22c55e" radius={[6, 6, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </div>
+
+        <div className="col-lg-4 col-md-12 col-12 mb-3">
+          <div className="bg-dark p-4 rounded-4 shadow-lg h-100">
+            <h6 className="mb-3 text-center fw-semibold">📊 Tendencia semanal</h6>
+            <ResponsiveContainer width="100%" height={220}>
+              <LineChart data={weeklyTrend}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                <XAxis 
+                  dataKey="date" 
+                  stroke="#9ca3af" 
+                  tick={{ fontSize: 11 }}
+                  angle={-45}
+                  textAnchor="end"
+                  height={60}
+                />
+                <YAxis stroke="#9ca3af" />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1f2937', border: 'none', borderRadius: '8px' }}
+                />
+                <Legend />
+                <Line 
+                  type="monotone" 
+                  dataKey="count" 
+                  stroke="#22c55e" 
+                  strokeWidth={2}
+                  name="Registros"
+                  dot={{ fill: '#22c55e', r: 4 }}
+                />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
 
+      {/* Recomendación */}
       <div
-        className="alert alert-secondary text-center w-75 rounded-4 shadow-sm"
-        style={{ backgroundColor: "#1e293b", color: "#a3e635" }}
+        className="alert text-center rounded-4 shadow-sm mb-4"
+        style={{ 
+          backgroundColor: "#1e293b", 
+          color: "#a3e635",
+          maxWidth: "1400px",
+          width: "100%",
+          border: "1px solid #22c55e30"
+        }}
       >
+        <Activity className="d-inline me-2" size={20} />
         {recommendation || "Analizando tus hábitos..."}
       </div>
 
-      <div className="bg-dark rounded-4 p-4 mt-5 w-75 shadow-lg">
-        <h5 className="text-success mb-3">📋 Hábitos recientes</h5>
-        {habits.length === 0 ? (
-          <p className="text-secondary text-center">Aún no has registrado hábitos.</p>
-        ) : (
-          <div className="table-responsive">
-            <table className="table table-dark table-hover align-middle">
-              <thead>
-                <tr className="text-success">
-                  <th>Fecha</th>
-                  <th>Transporte</th>
-                  <th>Energía</th>
-                  <th>Duración</th>
-                  <th>Tipo de día</th>
-                  <th>Notas</th>
-                </tr>
-              </thead>
-              <tbody>
-                {habits
-                  .sort(
-                    (a, b) =>
-                      new Date(b.date).getTime() - new Date(a.date).getTime()
-                  )
-                  .slice(0, 7)
-                  .map((h, i) => (
-                    <tr key={i}>
-                      <td>{h.date}</td>
-                      <td>{h.transport}</td>
-                      <td>{h.energy}</td>
-                      <td>{h.duration}</td>
-                      <td>{h.dayType}</td>
-                      <td>{h.notes || "-"}</td>
-                    </tr>
-                  ))}
-              </tbody>
-            </table>
+      {/* Métricas de tipo de día y duración */}
+      <div className="w-100 d-flex flex-wrap justify-content-center gap-3 mb-4" style={{ maxWidth: "1400px" }}>
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "200px", flex: "1" }}>
+          <div className="text-center">
+            <Calendar size={24} className="text-info mb-2" />
+            <div className="text-white-50 small">Días laborales</div>
+            <div className="fs-4 fw-bold">{laboralDays}</div>
           </div>
-        )}
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "200px", flex: "1" }}>
+          <div className="text-center">
+            <Calendar size={24} className="text-warning mb-2" />
+            <div className="text-white-50 small">Fines de semana</div>
+            <div className="fs-4 fw-bold">{weekendDays}</div>
+          </div>
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "150px", flex: "1" }}>
+          <div className="text-center">
+            <Zap size={24} className="text-danger mb-2" />
+            <div className="text-white-50 small">Alta energía</div>
+            <div className="fs-4 fw-bold">{highEnergyDays}</div>
+          </div>
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "150px", flex: "1" }}>
+          <div className="text-center">
+            <Zap size={24} className="text-warning mb-2" />
+            <div className="text-white-50 small">Media energía</div>
+            <div className="fs-4 fw-bold">{mediumEnergyDays}</div>
+          </div>
+        </div>
+
+        <div className="bg-dark rounded-3 p-3 shadow" style={{ minWidth: "150px", flex: "1" }}>
+          <div className="text-center">
+            <Clock size={24} className="text-success mb-2" />
+            <div className="text-white-50 small">Baja energía</div>
+            <div className="fs-4 fw-bold">{lowEnergyDays}</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Acceso rápido al histórico */}
+      <div 
+        className="bg-dark rounded-4 p-5 shadow-lg mb-4 text-center position-relative overflow-hidden" 
+        style={{ maxWidth: "1400px", width: "100%", border: "2px solid #22c55e30" }}
+      >
+        <div 
+          className="position-absolute top-0 start-0 w-100 h-100" 
+          style={{ 
+            background: "linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, transparent 100%)",
+            pointerEvents: "none" 
+          }}
+        />
+        <div className="position-relative">
+          <FileText size={48} className="text-success mb-3" />
+          <h4 className="fw-bold mb-2">Ver Histórico Completo</h4>
+          <p className="text-white-50 mb-4">
+            Explora todos tus registros con filtros avanzados, búsqueda y vistas personalizadas
+          </p>
+          <div className="d-flex justify-content-center gap-3 align-items-center mb-3">
+            <div className="d-flex align-items-center gap-2">
+              <span className="badge bg-success">{habits.length}</span>
+              <small className="text-white-50">Total registros</small>
+            </div>
+            <div className="text-white-50">•</div>
+            <div className="d-flex align-items-center gap-2">
+              <FileText size={16} className="text-success" />
+              <small className="text-white-50">Vista de tabla y tarjetas</small>
+            </div>
+            <div className="text-white-50">•</div>
+            <div className="d-flex align-items-center gap-2">
+              <Activity size={16} className="text-success" />
+              <small className="text-white-50">Filtros avanzados</small>
+            </div>
+          </div>
+          <a href="/history" className="btn btn-success btn-lg px-5 py-3">
+            <FileText size={20} className="me-2" />
+            Ir al Histórico
+          </a>
+        </div>
       </div>
     </div>
   );

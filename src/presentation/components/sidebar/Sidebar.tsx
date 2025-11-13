@@ -27,18 +27,26 @@ const SidebarHorizontal = () => {
             <NavLink
               to="/dashboard"
               className={({ isActive }) =>
-                `btn btn-link text-decoration-none ${isActive ? "text-success" : "text-secondary"}`
+                `btn btn-link text-decoration-none ${isActive ? "text-success fw-semibold" : "text-secondary"}`
               }
             >
-              Inicio
+              📊 Dashboard
             </NavLink>
             <NavLink
               to="/habits"
               className={({ isActive }) =>
-                `btn btn-link text-decoration-none ${isActive ? "text-success" : "text-secondary"}`
+                `btn btn-link text-decoration-none ${isActive ? "text-success fw-semibold" : "text-secondary"}`
               }
             >
-              Registrar hábitos
+              ✏️ Registrar hábitos
+            </NavLink>
+            <NavLink
+              to="/history"
+              className={({ isActive }) =>
+                `btn btn-link text-decoration-none ${isActive ? "text-success fw-semibold" : "text-secondary"}`
+              }
+            >
+              📋 Histórico
             </NavLink>
           </div>
         </div>
