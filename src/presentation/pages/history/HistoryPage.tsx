@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../data/FirebaseConfig";
 import { useAuth } from "../../hooks/useAuth";
 import {
@@ -47,13 +47,16 @@ const HistoryPage = () => {
       try {
         const q = query(
           collection(db, "habits"),
-          where("uid", "==", user.uid),
-          orderBy("date", "desc")
+          where("uid", "==", user.uid)
         );
         const querySnapshot = await getDocs(q);
         const habitsData = querySnapshot.docs.map((doc) => doc.data()) as Habit[];
-        setHabits(habitsData);
-        setFilteredHabits(habitsData);
+        // Ordenar en el cliente por fecha descendente
+        const sortedData = habitsData.sort((a, b) => {
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        });
+        setHabits(sortedData);
+        setFilteredHabits(sortedData);
       } catch (error) {
         console.error("Error fetching habits:", error);
       } finally {
@@ -144,7 +147,7 @@ const HistoryPage = () => {
     if (isEcoTransport && isLowEnergy) {
       return { icon: <Award size={16} />, text: "Excelente", color: "success" };
     } else if (isEcoTransport || isLowEnergy) {
-      return { icon: <CheckCircle size={16} />, text: "Bien", color: "info" };
+      return { icon: <CheckCircle size={16} />, text: "Bueno", color: "info" };
     } else {
       return { icon: <AlertCircle size={16} />, text: "Mejorar", color: "warning" };
     }
