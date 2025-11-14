@@ -26,7 +26,6 @@
 - [Instalación](#-instalación)
 - [Configuración](#-configuración)
 - [Uso](#-uso)
-- [Estructura del Proyecto](#-estructura-del-proyecto)
 - [Roadmap](#-roadmap)
 - [Contribuir](#-contribuir)
 - [Licencia](#-licencia)
@@ -190,35 +189,6 @@ El cambio climático es uno de los mayores desafíos de nuestra época. EcoTrack
 4. **Explorar histórico:** Filtra, busca y exporta datos
 5. **Desbloquear logros:** Mantén rachas y alcanza objetivos
 
----
-
-## 📁 Estructura del Proyecto
-
-\`\`\`
-ecotrack/
-├── src/
-│   ├── app/
-│   │   ├── context/           # AuthContext, AuthProvider
-│   │   ├── layout/            # AuthLayout, MainLayout
-│   │   └── router/            # AppRouter, rutas protegidas
-│   ├── data/
-│   │   └── FirebaseConfig.ts  # Configuración Firebase
-│   ├── presentation/
-│   │   ├── components/        # Componentes reutilizables
-│   │   ├── hooks/             # Custom hooks (useAuth)
-│   │   ├── pages/
-│   │   │   ├── achievements/  # 🏆 Sistema de logros
-│   │   │   ├── auth/          # Login y registro
-│   │   │   ├── dashboard/     # 📊 Dashboard principal
-│   │   │   ├── habits/        # ✏️ Registro de hábitos
-│   │   │   └── history/       # 📋 Histórico completo
-│   │   └── utils/
-│   │       └── achievements.ts # Lógica de gamificación
-│   └── main.tsx
-├── .env                       # Variables de entorno
-├── package.json
-└── README.md
-\`\`\`
 
 ---
 
@@ -275,22 +245,14 @@ Copyright © 2025 Andrés Felipe Gañán Moreno
 **Andrés Felipe Gañán Moreno**
 
 - GitHub: [@anfega154](https://github.com/anfega154)
-- LinkedIn: [Andrés Felipe Gañán Moreno](https://www.linkedin.com/in/andr%C3%A9s-felipe-ga%C3%B1%C3%A1n-moreno-profile/)
-
----
-
-## 🙏 Agradecimientos
-
-- Comunidad de React y Firebase
-- Todos los que contribuyen a un mundo más sostenible
-- Early adopters y testers
+- LinkedIn: [Andrés Felipe Gañán Moreno](https://www.linkedin.com/in/andres-felipe-ga%C3%B1an-moreno-a6a66016b/)
 
 ---
 
 ## 📞 Contacto
 
 - **Issues:** [github.com/anfega154/ecotrack/issues](https://github.com/anfega154/ecotrack/issues)
-- **LinkedIn:** [Andrés Felipe Gañán Moreno](https://www.linkedin.com/in/andr%C3%A9s-felipe-ga%C3%B1%C3%A1n-moreno-profile/)
+- **LinkedIn:** [Andrés Felipe Gañán Moreno](https://www.linkedin.com/in/andres-felipe-ga%C3%B1an-moreno-a6a66016b/)
 
 ---
 
