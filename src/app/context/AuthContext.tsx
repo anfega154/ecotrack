@@ -1,9 +1,5 @@
 import { createContext } from "react";
-
-interface AuthContextProps {
-  user: any;
-  loading: boolean;
-}
+import type { AuthContextProps } from "../../types";
 
 export const AuthContext = createContext<AuthContextProps>({
   user: null,

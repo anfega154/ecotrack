@@ -17,7 +17,6 @@ const Navbar = () => {
 
   return (
     <nav className="w-full h-16 bg-white border-b border-gray-200 shadow-sm flex items-center px-6 z-50">
-      {/* Logo y navegación */}
       <div className="flex items-center gap-8 flex-shrink-0">
         <a href="#" className="flex items-center gap-2">
           <img
@@ -68,10 +67,8 @@ const Navbar = () => {
         </ul>
       </div>
 
-      {/* Espaciador */}
       <div className="flex-1" />
 
-      {/* Iconos y usuario */}
       <div className="flex items-center gap-4 flex-shrink-0">
         <button className="text-gray-600 hover:text-green-600 transition">
           <ShoppingCart size={18} />
