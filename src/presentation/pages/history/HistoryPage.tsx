@@ -42,7 +42,6 @@ const HistoryPage = () => {
         );
         const querySnapshot = await getDocs(q);
         const habitsData = querySnapshot.docs.map((doc) => doc.data()) as Habit[];
-        // Ordenar en el cliente por fecha descendente
         const sortedData = habitsData.sort((a, b) => {
           return new Date(b.date).getTime() - new Date(a.date).getTime();
         });
@@ -57,7 +56,6 @@ const HistoryPage = () => {
     fetchHabits();
   }, [user]);
 
-  // Filtros y búsqueda
   useEffect(() => {
     let filtered = habits;
 
@@ -80,7 +78,6 @@ const HistoryPage = () => {
     setFilteredHabits(filtered);
   }, [searchTerm, filterTransport, filterEnergy, habits]);
 
-  // Estadísticas
   const stats = {
     total: habits.length,
     ecoFriendly: habits.filter((h) => h.transport === "bici" || h.transport === "publico").length,
@@ -172,7 +169,6 @@ const HistoryPage = () => {
       className="min-vh-100 vw-100 p-4 text-white"
       style={{ backgroundColor: "#111827" }}
     >
-      {/* Header */}
       <div className="container-fluid" style={{ maxWidth: "1600px" }}>
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
           <div className="d-flex align-items-center">
@@ -205,7 +201,6 @@ const HistoryPage = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="row g-3 mb-4">
           <div className="col-md-3 col-6">
             <div
@@ -260,7 +255,6 @@ const HistoryPage = () => {
           </div>
         </div>
 
-        {/* Filters and Search */}
         <div className="bg-dark rounded-4 p-4 mb-4 shadow-lg">
           <div className="row g-3">
             <div className="col-md-5">
@@ -331,7 +325,6 @@ const HistoryPage = () => {
           </div>
         </div>
 
-        {/* Content */}
         {loading ? (
           <div className="text-center py-5">
             <div className="spinner-border text-success" role="status">
@@ -350,7 +343,6 @@ const HistoryPage = () => {
             </p>
           </div>
         ) : viewMode === "grid" ? (
-          // Grid View
           <div className="row g-3">
             {filteredHabits.map((habit, index) => {
               const status = getHabitStatus(habit);
@@ -371,7 +363,6 @@ const HistoryPage = () => {
                       e.currentTarget.style.boxShadow = "none";
                     }}
                   >
-                    {/* Status Badge */}
                     <div className="position-absolute top-0 end-0 m-3">
                       <span className={`badge bg-${status.color}-subtle text-${status.color} border border-${status.color}`}>
                         {status.icon}
@@ -379,7 +370,6 @@ const HistoryPage = () => {
                       </span>
                     </div>
 
-                    {/* Date */}
                     <div className="d-flex align-items-center gap-2 mb-3">
                       <Calendar size={20} className="text-success" />
                       <h5 className="mb-0 fw-bold">
@@ -391,7 +381,6 @@ const HistoryPage = () => {
                       </h5>
                     </div>
 
-                    {/* Info Grid */}
                     <div className="row g-2 mb-3">
                       <div className="col-6">
                         <div className="bg-secondary bg-opacity-25 rounded-3 p-2">
@@ -438,7 +427,6 @@ const HistoryPage = () => {
                       </div>
                     </div>
 
-                    {/* Notes */}
                     {habit.notes && (
                       <div className="bg-secondary bg-opacity-10 rounded-3 p-3">
                         <div className="d-flex align-items-center gap-2 mb-2">
@@ -454,7 +442,6 @@ const HistoryPage = () => {
             })}
           </div>
         ) : (
-          // List View - Table
           <div className="bg-dark rounded-4 shadow-lg overflow-hidden">
             <div className="table-responsive" style={{ maxHeight: "700px" }}>
               <table className="table table-dark table-hover mb-0">

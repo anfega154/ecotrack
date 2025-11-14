@@ -34,7 +34,6 @@ const HabitsPage = () => {
     return "Sigue registrando tus hábitos para obtener recomendaciones personalizadas.";
   };
 
-  // Calculate completion percentage
   const calculateProgress = () => {
     const fields = [transport, energy, dayType, duration, date];
     const completed = fields.filter(f => f).length;
@@ -85,7 +84,6 @@ const HabitsPage = () => {
         position: "relative"
       }}
     >
-      {/* Animated Background */}
       <div 
         style={{
           position: "fixed",
@@ -152,10 +150,8 @@ const HabitsPage = () => {
       <div className="container" style={{ maxWidth: "1400px", position: "relative", zIndex: 1 }}>
         <div className="row g-4 justify-content-center align-items-start">
           
-          {/* Left Side - Image & Stats */}
           <div className="col-lg-5 d-none d-lg-block">
             <div className="sticky-top" style={{ top: "2rem" }}>
-              {/* Hero Image Card */}
               <div 
                 className="rounded-4 overflow-hidden mb-4 position-relative animate-fadeIn"
                 style={{
@@ -178,7 +174,6 @@ const HabitsPage = () => {
                   background: "linear-gradient(135deg, rgba(16, 185, 129, 0.3) 0%, rgba(5, 150, 105, 0.4) 100%)"
                 }} />
                 
-                {/* Floating Stats */}
                 <div 
                   className="position-absolute bottom-0 start-0 end-0 p-4"
                   style={{
@@ -217,7 +212,6 @@ const HabitsPage = () => {
                 </div>
               </div>
 
-              {/* Progress Card */}
               <div 
                 className="p-4 rounded-4 animate-slideUp"
                 style={{
@@ -257,7 +251,6 @@ const HabitsPage = () => {
             </div>
           </div>
 
-          {/* Right Side - Form */}
           <div className="col-lg-6 col-12">
             <div
               className="p-4 p-md-5 rounded-4 animate-slideUp"
@@ -267,7 +260,6 @@ const HabitsPage = () => {
                 boxShadow: "0 20px 60px rgba(0, 0, 0, 0.4)"
               }}
             >
-              {/* Header */}
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <div className="d-flex align-items-center">
                   <div className="p-2 rounded-3 me-3" style={{ backgroundColor: "rgba(16, 185, 129, 0.15)" }}>
@@ -282,7 +274,6 @@ const HabitsPage = () => {
 
               <hr style={{ borderColor: "#334155", margin: "1.5rem 0" }} />
 
-              {/* Success/Error Message */}
               {message && (
                 <div 
                   className={`alert d-flex align-items-center py-3 mb-4 animate-fadeIn`}
@@ -312,14 +303,12 @@ const HabitsPage = () => {
 
               <form onSubmit={handleSave} className="text-white">
                 
-                {/* Step 1: Date & Transport */}
                 <div className="mb-4">
                   <h6 className="text-success fw-semibold mb-3 d-flex align-items-center">
                     <span className="badge bg-success me-2" style={{ width: "24px", height: "24px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>1</span>
                     Información básica
                   </h6>
 
-                  {/* Date */}
                   <div className="mb-3">
                     <label className="form-label fw-semibold d-flex align-items-center" style={{ fontSize: "0.9rem" }}>
                       <Calendar size={16} className="me-2" />
@@ -338,7 +327,6 @@ const HabitsPage = () => {
                     />
                   </div>
 
-                  {/* Transport Cards */}
                   <div className="mb-3">
                     <label className="form-label fw-semibold d-flex align-items-center" style={{ fontSize: "0.9rem" }}>
                       <Car size={16} className="me-2" />
@@ -376,14 +364,12 @@ const HabitsPage = () => {
 
                 <hr style={{ borderColor: "#334155", opacity: 0.5, margin: "1.5rem 0" }} />
 
-                {/* Step 2: Energy & Day Type */}
                 <div className="mb-4">
                   <h6 className="text-success fw-semibold mb-3 d-flex align-items-center">
                     <span className="badge bg-success me-2" style={{ width: "24px", height: "24px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>2</span>
                     Consumo y contexto
                   </h6>
 
-                  {/* Energy Cards */}
                   <div className="mb-3">
                     <label className="form-label fw-semibold d-flex align-items-center" style={{ fontSize: "0.9rem" }}>
                       <Zap size={16} className="me-2" />
@@ -415,7 +401,6 @@ const HabitsPage = () => {
                     </div>
                   </div>
 
-                  {/* Day Type */}
                   <div className="mb-3">
                     <label className="form-label fw-semibold d-flex align-items-center" style={{ fontSize: "0.9rem" }}>
                       <Calendar size={16} className="me-2" />
@@ -448,14 +433,12 @@ const HabitsPage = () => {
 
                 <hr style={{ borderColor: "#334155", opacity: 0.5, margin: "1.5rem 0" }} />
 
-                {/* Step 3: Intensity & Notes */}
                 <div className="mb-4">
                   <h6 className="text-success fw-semibold mb-3 d-flex align-items-center">
                     <span className="badge bg-success me-2" style={{ width: "24px", height: "24px", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center" }}>3</span>
                     Detalles adicionales
                   </h6>
 
-                  {/* Intensity */}
                   <div className="mb-3">
                     <label className="form-label fw-semibold d-flex align-items-center" style={{ fontSize: "0.9rem" }}>
                       <Clock size={16} className="me-2" />
@@ -488,7 +471,6 @@ const HabitsPage = () => {
                     </div>
                   </div>
 
-                  {/* Notes */}
                   <div className="mb-4">
                     <label className="form-label fw-semibold d-flex align-items-center" style={{ fontSize: "0.9rem" }}>
                       <MessageSquare size={16} className="me-2" />
@@ -512,7 +494,6 @@ const HabitsPage = () => {
                   </div>
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   disabled={isLoading}
@@ -538,7 +519,6 @@ const HabitsPage = () => {
                 </button>
               </form>
 
-              {/* Eco Tip Card */}
               <div
                 className="mt-4 p-4 rounded-3 animate-fadeIn"
                 style={{
@@ -557,7 +537,6 @@ const HabitsPage = () => {
                 </div>
               </div>
 
-              {/* Footer Links */}
               <div className="text-center mt-4 pt-3" style={{ borderTop: "1px solid #334155" }}>
                 <small style={{ color: "#cbd5e1" }}>
                   <Link to="/dashboard" className="text-decoration-none me-3 text-success fw-semibold">

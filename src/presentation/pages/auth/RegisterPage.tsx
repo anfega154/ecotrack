@@ -14,7 +14,6 @@ const RegisterPage = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
 
-  // Password strength indicator
   const getPasswordStrength = (pass: string) => {
     if (pass.length === 0) return { strength: 0, label: "", color: "" };
     if (pass.length < 6) return { strength: 1, label: "Débil", color: "#ef4444" };
@@ -84,7 +83,6 @@ const RegisterPage = () => {
         position: "relative"
       }}
     >
-      {/* Animated Background */}
       <div 
         style={{
           position: "absolute",
@@ -155,7 +153,6 @@ const RegisterPage = () => {
         className="row g-0 w-100 h-100 justify-content-center align-items-center"
         style={{ maxWidth: "none", margin: 0, position: "relative", zIndex: 1 }}
       >
-        {/* Image Section */}
         <div className="col-md-6 col-12 p-0 h-100 position-relative animate-slideInRight order-md-2">
           <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
             <img
@@ -173,7 +170,6 @@ const RegisterPage = () => {
               background: "linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.35) 100%)",
               pointerEvents: "none"
             }} />
-            {/* Feature Cards Overlay */}
             <div style={{
               position: "absolute",
               bottom: "10%",
@@ -212,13 +208,11 @@ const RegisterPage = () => {
           </div>
         </div>
 
-        {/* Form Section */}
         <div
           className="col-md-6 col-12 d-flex align-items-center justify-content-center text-white h-100 p-5 animate-fadeInUp order-md-1"
           style={{ backgroundColor: "#1e293b", overflowY: "auto" }}
         >
           <div style={{ maxWidth: "440px", width: "100%" }}>
-            {/* Logo Header */}
             <div className="d-flex align-items-center mb-2">
               <div className="p-2 rounded-3" style={{ backgroundColor: "rgba(16, 185, 129, 0.15)" }}>
                 <Leaf className="text-success" size={36} />
@@ -235,7 +229,6 @@ const RegisterPage = () => {
             <p className="mb-4" style={{ color: "#cbd5e1" }}>Únete a la comunidad eco-consciente</p>
 
             <form onSubmit={handleRegister}>
-              {/* Email Input */}
               <div className="mb-3">
                 <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
                   <Mail size={16} className="me-2" />
@@ -256,7 +249,6 @@ const RegisterPage = () => {
                 />
               </div>
 
-              {/* Password Input with Strength Indicator */}
               <div className="mb-3">
                 <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
                   <Lock size={16} className="me-2" />
@@ -291,7 +283,6 @@ const RegisterPage = () => {
                     {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                {/* Password Strength Bar */}
                 {password.length > 0 && (
                   <div className="mt-2">
                     <div className="d-flex gap-1 mb-1">
@@ -314,7 +305,6 @@ const RegisterPage = () => {
                 )}
               </div>
 
-              {/* Confirm Password Input */}
               <div className="mb-4">
                 <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
                   <CheckCircle2 size={16} className="me-2" />
@@ -349,7 +339,6 @@ const RegisterPage = () => {
                     {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                   </button>
                 </div>
-                {/* Match Indicator */}
                 {confirmPassword.length > 0 && (
                   <small 
                     className="d-flex align-items-center mt-2"
@@ -373,7 +362,6 @@ const RegisterPage = () => {
                 )}
               </div>
 
-              {/* Error Message */}
               {error && (
                 <div 
                   className="alert d-flex align-items-center py-3 mb-3" 
@@ -389,7 +377,6 @@ const RegisterPage = () => {
                 </div>
               )}
 
-              {/* Register Button */}
               <button
                 type="submit"
                 disabled={isLoading}
@@ -409,14 +396,12 @@ const RegisterPage = () => {
                 )}
               </button>
 
-              {/* Divider */}
               <div className="d-flex align-items-center my-4">
                 <hr className="flex-grow-1" style={{ borderColor: "#475569", opacity: 0.5 }} />
                 <span className="mx-3" style={{ fontSize: "0.85rem", color: "#e2e8f0" }}>o regístrate con</span>
                 <hr className="flex-grow-1" style={{ borderColor: "#475569", opacity: 0.5 }} />
               </div>
 
-              {/* Google Register Button */}
               <button
                 type="button"
                 onClick={handleGoogleRegister}
@@ -456,7 +441,6 @@ const RegisterPage = () => {
                 Continuar con Google
               </button>
 
-              {/* Terms Agreement */}
               <p className="text-center mt-3 mb-4" style={{ fontSize: "0.8rem", color: "#cbd5e1" }}>
                 Al registrarte, aceptas nuestros{" "}
                 <Link to="#" className="text-success text-decoration-none">Términos</Link>
@@ -464,10 +448,8 @@ const RegisterPage = () => {
                 <Link to="#" className="text-success text-decoration-none">Política de Privacidad</Link>
               </p>
 
-              {/* Divider Line */}
               <hr style={{ borderColor: "#475569", opacity: 0.3, margin: "2rem 0" }} />
 
-              {/* Login Link */}
               <p className="text-center mb-0" style={{ fontSize: "0.95rem" }}>
                 <span style={{ color: "#e2e8f0" }}>¿Ya tienes una cuenta?</span>{" "}
                 <Link

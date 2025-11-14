@@ -9,7 +9,6 @@ const NotFoundPage = () => {
           "url('https://i.pinimg.com/1200x/de/a5/58/dea558e009dd2f9436040c330339b027.jpg')",
       }}
     >
-      {/* Contenedor central */}
       <div className="flex flex-col items-center justify-center px-8 py-10 rounded-2xl backdrop-blur-md bg-white/70 shadow-2xl max-w-lg">
 
         <h1 className="text-9xl font-extrabold text-green-700 mb-2 drop-shadow-md">

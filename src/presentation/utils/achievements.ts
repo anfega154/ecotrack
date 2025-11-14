@@ -1,8 +1,6 @@
 import type { Badge, UserLevel, Streak } from "../../types";
 
-// Todos los badges disponibles
 export const ALL_BADGES: Omit<Badge, "unlocked" | "progress">[] = [
-  // Badges de Transporte
   {
     id: "cyclist_beginner",
     name: "Ciclista Novato",
@@ -51,8 +49,6 @@ export const ALL_BADGES: Omit<Badge, "unlocked" | "progress">[] = [
     requirement: 50,
     category: "transport",
   },
-
-  // Badges de Energía
   {
     id: "energy_saver",
     name: "Ahorrador de Energía",
@@ -77,8 +73,6 @@ export const ALL_BADGES: Omit<Badge, "unlocked" | "progress">[] = [
     requirement: 50,
     category: "energy",
   },
-
-  // Badges de Rachas
   {
     id: "streak_3",
     name: "Compromiso Inicial",
@@ -111,8 +105,6 @@ export const ALL_BADGES: Omit<Badge, "unlocked" | "progress">[] = [
     requirement: 30,
     category: "streak",
   },
-
-  // Badges Generales
   {
     id: "first_habit",
     name: "Primer Paso",
@@ -155,24 +147,21 @@ export const ALL_BADGES: Omit<Badge, "unlocked" | "progress">[] = [
   },
 ];
 
-// Títulos de niveles
 const LEVEL_TITLES = [
-  "Novato Verde", // 0-100 XP
-  "Aprendiz Sostenible", // 100-250
-  "Consciente Ambiental", // 250-500
-  "Defensor de la Tierra", // 500-1000
-  "Eco Comprometido", // 1000-2000
-  "Líder Sostenible", // 2000-3500
-  "Maestro Eco", // 3500-5500
-  "Guardián del Planeta", // 5500-8000
-  "Leyenda Verde", // 8000-11000
-  "Eco Master Supremo", // 11000+
+  "Novato Verde",
+  "Aprendiz Sostenible",
+  "Consciente Ambiental",
+  "Defensor de la Tierra",
+  "Eco Comprometido",
+  "Líder Sostenible",
+  "Maestro Eco",
+  "Guardián del Planeta",
+  "Leyenda Verde",
+  "Eco Master Supremo",
 ];
 
-// XP requerido por nivel
 const XP_THRESHOLDS = [0, 100, 250, 500, 1000, 2000, 3500, 5500, 8000, 11000];
 
-// Calcular nivel basado en XP
 export const calculateLevel = (xp: number): UserLevel => {
   let level = 0;
   let xpForNext = XP_THRESHOLDS[1];
@@ -200,52 +189,39 @@ export const calculateLevel = (xp: number): UserLevel => {
   };
 };
 
-// Calcular XP basado en hábitos
 export const calculateXP = (habits: Array<{ transport: string; energy: string }>): number => {
-  let xp = 0;
+  const BASE_XP = 5;
+  const BIKE_BONUS = 10;
+  const PUBLIC_TRANSPORT_BONUS = 7;
+  const LOW_ENERGY_BONUS = 8;
+  const MEDIUM_ENERGY_BONUS = 3;
+  const ECO_COMBO_BONUS = 5;
 
-  habits.forEach((habit) => {
-    // XP base por registrar
-    xp += 5;
+  return habits.reduce((total, habit) => {
+    let habitXP = BASE_XP;
 
-    // Bonus por transporte eco-friendly
-    if (habit.transport === "bici") {
-      xp += 10;
-    } else if (habit.transport === "publico") {
-      xp += 7;
-    }
+    if (habit.transport === "bici") habitXP += BIKE_BONUS;
+    else if (habit.transport === "publico") habitXP += PUBLIC_TRANSPORT_BONUS;
 
-    // Bonus por bajo consumo energético
-    if (habit.energy === "poco") {
-      xp += 8;
-    } else if (habit.energy === "medio") {
-      xp += 3;
-    }
+    if (habit.energy === "poco") habitXP += LOW_ENERGY_BONUS;
+    else if (habit.energy === "medio") habitXP += MEDIUM_ENERGY_BONUS;
 
-    // Bonus por ser completamente eco-friendly
-    if (
-      (habit.transport === "bici" || habit.transport === "publico") &&
-      habit.energy === "poco"
-    ) {
-      xp += 5; // Bonus extra
-    }
-  });
+    const isEcoFriendly = (habit.transport === "bici" || habit.transport === "publico") && habit.energy === "poco";
+    if (isEcoFriendly) habitXP += ECO_COMBO_BONUS;
 
-  return xp;
+    return total + habitXP;
+  }, 0);
 };
 
-// Calcular racha actual
 export const calculateStreak = (habits: Array<{ date: string }>): Streak => {
   if (habits.length === 0) {
     return { current: 0, longest: 0, lastDate: null };
   }
 
-  // Ordenar por fecha descendente
   const sortedHabits = [...habits].sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
-  // Obtener fechas únicas
   const uniqueDates = [...new Set(sortedHabits.map((h) => h.date))].sort(
     (a, b) => new Date(b).getTime() - new Date(a).getTime()
   );
@@ -257,7 +233,6 @@ export const calculateStreak = (habits: Array<{ date: string }>): Streak => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
-  // Calcular racha actual
   for (let i = 0; i < uniqueDates.length; i++) {
     const habitDate = new Date(uniqueDates[i]);
     habitDate.setHours(0, 0, 0, 0);
@@ -273,7 +248,6 @@ export const calculateStreak = (habits: Array<{ date: string }>): Streak => {
     }
   }
 
-  // Calcular racha más larga
   for (let i = 0; i < uniqueDates.length; i++) {
     if (i === 0) {
       tempStreak = 1;
@@ -301,7 +275,6 @@ export const calculateStreak = (habits: Array<{ date: string }>): Streak => {
   };
 };
 
-// Calcular badges desbloqueados
 export const calculateBadges = (habits: Array<{ transport: string; energy: string; date: string }>): Badge[] => {
   const bikeCount = habits.filter((h) => h.transport === "bici").length;
   const publicCount = habits.filter((h) => h.transport === "publico").length;
@@ -320,7 +293,6 @@ export const calculateBadges = (habits: Array<{ transport: string; energy: strin
     let unlocked = false;
 
     switch (badge.id) {
-      // Transport badges
       case "cyclist_beginner":
       case "cyclist_pro":
       case "cyclist_master":
@@ -333,23 +305,17 @@ export const calculateBadges = (habits: Array<{ transport: string; energy: strin
       case "eco_commuter":
         progress = ecoTransportCount;
         break;
-
-      // Energy badges
       case "energy_saver":
       case "energy_master":
       case "energy_champion":
         progress = lowEnergyCount;
         break;
-
-      // Streak badges
       case "streak_3":
       case "streak_7":
       case "streak_14":
       case "streak_30":
         progress = streak.longest;
         break;
-
-      // General badges
       case "first_habit":
       case "habits_10":
       case "habits_50":
@@ -371,7 +337,6 @@ export const calculateBadges = (habits: Array<{ transport: string; energy: strin
   });
 };
 
-// Obtener próximo badge a desbloquear
 export const getNextBadge = (badges: Badge[]): Badge | null => {
   const lockedBadges = badges
     .filter((b) => !b.unlocked)

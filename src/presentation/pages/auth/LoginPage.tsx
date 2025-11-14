@@ -51,7 +51,6 @@ const LoginPage = () => {
         position: "relative"
       }}
     >
-      {/* Animated Background Gradient */}
       <div 
         style={{
           position: "absolute",
@@ -119,7 +118,6 @@ const LoginPage = () => {
         className="row g-0 w-100 h-100 justify-content-center align-items-center"
         style={{ maxWidth: "none", margin: 0, position: "relative", zIndex: 1 }}
       >
-        {/* Image Section with Overlay */}
         <div className="col-md-6 col-12 p-0 h-100 position-relative animate-slideInLeft">
           <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
             <img
@@ -128,7 +126,6 @@ const LoginPage = () => {
               className="img-fluid h-100 w-100"
               style={{ objectFit: "cover", filter: "brightness(0.8)" }}
             />
-            {/* Gradient Overlay */}
             <div style={{
               position: "absolute",
               top: 0,
@@ -138,7 +135,6 @@ const LoginPage = () => {
               background: "linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.3) 100%)",
               pointerEvents: "none"
             }} />
-            {/* Floating Quote */}
             <div style={{
               position: "absolute",
               bottom: "10%",
@@ -160,13 +156,11 @@ const LoginPage = () => {
           </div>
         </div>
 
-        {/* Form Section */}
         <div
           className="col-md-6 col-12 d-flex align-items-center justify-content-center text-white h-100 p-5 animate-fadeInUp"
           style={{ backgroundColor: "#1e293b" }}
         >
           <div style={{ maxWidth: "440px", width: "100%" }}>
-            {/* Logo Header */}
             <div className="d-flex align-items-center mb-2">
               <div className="p-2 rounded-3" style={{ backgroundColor: "rgba(16, 185, 129, 0.15)" }}>
                 <Leaf className="text-success" size={36} />
@@ -182,7 +176,6 @@ const LoginPage = () => {
             <p className="mb-4" style={{ color: "#cbd5e1" }}>Inicia sesión para continuar tu viaje ecológico</p>
 
             <form onSubmit={handleLogin}>
-              {/* Email Input with Icon */}
               <div className="mb-3">
                 <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
                   <Mail size={16} className="me-2" />
@@ -203,7 +196,6 @@ const LoginPage = () => {
                 />
               </div>
 
-              {/* Password Input with Toggle */}
               <div className="mb-3">
                 <label className="form-label fw-semibold" style={{ fontSize: "0.9rem" }}>
                   <Lock size={16} className="me-2" />
@@ -240,7 +232,6 @@ const LoginPage = () => {
                 </div>
               </div>
 
-              {/* Error Message with Icon */}
               {error && (
                 <div 
                   className="alert d-flex align-items-center py-3 mb-3" 
@@ -256,7 +247,6 @@ const LoginPage = () => {
                 </div>
               )}
 
-              {/* Login Button */}
               <button
                 type="submit"
                 disabled={isLoading}
@@ -277,14 +267,12 @@ const LoginPage = () => {
                 )}
               </button>
 
-              {/* Divider */}
               <div className="d-flex align-items-center my-4">
                 <hr className="flex-grow-1" style={{ borderColor: "#475569", opacity: 0.5 }} />
                 <span className="mx-3" style={{ fontSize: "0.85rem", color: "#e2e8f0" }}>o continúa con</span>
                 <hr className="flex-grow-1" style={{ borderColor: "#475569", opacity: 0.5 }} />
               </div>
 
-              {/* Google Login Button */}
               <button
                 type="button"
                 onClick={handleGoogleLogin}
@@ -324,7 +312,6 @@ const LoginPage = () => {
                 Continuar con Google
               </button>
 
-              {/* Forgot Password */}
               <div className="text-center mt-3 mb-4">
                 <Link
                   to="#"
@@ -339,10 +326,8 @@ const LoginPage = () => {
                 </Link>
               </div>
 
-              {/* Divider Line */}
               <hr style={{ borderColor: "#475569", opacity: 0.3, margin: "2rem 0" }} />
 
-              {/* Sign Up Link */}
               <p className="text-center mb-3" style={{ fontSize: "0.95rem" }}>
                 <span style={{ color: "#e2e8f0" }}>¿No tienes una cuenta?</span>{" "}
                 <Link
@@ -356,7 +341,6 @@ const LoginPage = () => {
                 </Link>
               </p>
 
-              {/* Footer Links */}
               <div className="text-center">
                 <small style={{ color: "#94a3b8", fontSize: "0.8rem" }}>
                   <Link 

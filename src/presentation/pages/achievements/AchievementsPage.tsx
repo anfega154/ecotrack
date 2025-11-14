@@ -36,10 +36,9 @@ const AchievementsPage = () => {
       try {
         const q = query(collection(db, "habits"), where("uid", "==", user.uid));
         const querySnapshot = await getDocs(q);
-        const habitsData = querySnapshot.docs.map((doc) => doc.data()) as Array<{ transport: string; energy: string; date: string }>;
+        const habitsData = querySnapshot.docs.map((doc) => doc.data()) as Array<{ transport: string; energy: string; date: string }>;;
         setHabits(habitsData);
 
-        // Calcular logros
         const calculatedBadges = calculateBadges(habitsData);
         setBadges(calculatedBadges);
 
@@ -102,7 +101,6 @@ const AchievementsPage = () => {
       style={{ backgroundColor: "#111827" }}
     >
       <div className="container-fluid" style={{ maxWidth: "1600px" }}>
-        {/* Header */}
         <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
           <div className="d-flex align-items-center">
             <Trophy className="text-warning me-3" size={40} />
@@ -115,7 +113,6 @@ const AchievementsPage = () => {
           </div>
         </div>
 
-        {/* Stats Cards */}
         <div className="row g-3 mb-4">
           {/* Nivel */}
           <div className="col-md-3 col-6">
@@ -145,7 +142,6 @@ const AchievementsPage = () => {
             </div>
           </div>
 
-          {/* XP Total */}
           <div className="col-md-3 col-6">
             <div
               className="bg-dark rounded-4 p-4 h-100 text-center"
@@ -157,7 +153,6 @@ const AchievementsPage = () => {
             </div>
           </div>
 
-          {/* Racha Actual */}
           <div className="col-md-3 col-6">
             <div
               className="bg-dark rounded-4 p-4 h-100 text-center"
@@ -171,7 +166,6 @@ const AchievementsPage = () => {
             </div>
           </div>
 
-          {/* Racha Más Larga */}
           <div className="col-md-3 col-6">
             <div
               className="bg-dark rounded-4 p-4 h-100 text-center"
@@ -186,7 +180,6 @@ const AchievementsPage = () => {
           </div>
         </div>
 
-        {/* Progreso General */}
         <div className="bg-dark rounded-4 p-4 mb-4 shadow-lg">
           <div className="row align-items-center">
             <div className="col-md-8">
@@ -247,7 +240,6 @@ const AchievementsPage = () => {
           </div>
         </div>
 
-        {/* Filtros */}
         <div className="d-flex gap-2 mb-4 flex-wrap">
           <button
             className={`btn ${
@@ -295,7 +287,6 @@ const AchievementsPage = () => {
           </button>
         </div>
 
-        {/* Badges Grid */}
         <div className="row g-3">
           {filteredBadges.map((badge) => (
             <div key={badge.id} className="col-lg-3 col-md-4 col-sm-6 col-12">
@@ -341,7 +332,6 @@ const AchievementsPage = () => {
                   )}
                 </div>
 
-                {/* Badge Info */}
                 <h6 className="fw-bold text-center mb-2">
                   {badge.unlocked ? badge.name : "???"}
                 </h6>
@@ -349,7 +339,6 @@ const AchievementsPage = () => {
                   {badge.unlocked ? badge.description : "Insignia bloqueada"}
                 </p>
 
-                {/* Progress Bar */}
                 <div className="mb-2">
                   <div className="d-flex justify-content-between mb-1">
                     <small className="text-white-50">Progreso</small>
@@ -370,7 +359,6 @@ const AchievementsPage = () => {
                   </div>
                 </div>
 
-                {/* Category Badge */}
                 <div className="text-center">
                   <span
                     className={`badge bg-${getBadgeColor(badge.category)}-subtle text-${getBadgeColor(badge.category)} border border-${getBadgeColor(badge.category)}`}
@@ -383,7 +371,6 @@ const AchievementsPage = () => {
           ))}
         </div>
 
-        {/* Empty State */}
         {filteredBadges.length === 0 && (
           <div className="bg-dark rounded-4 p-5 text-center">
             <Trophy size={64} className="text-white-50 mb-3" />
