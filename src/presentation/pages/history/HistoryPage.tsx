@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../data/FirebaseConfig";
 import { useAuth } from "../../hooks/useAuth";
+import type { Habit } from "../../../types";
 import {
   Calendar,
   Car,
@@ -20,24 +21,14 @@ import {
   CheckCircle,
 } from "lucide-react";
 
-interface Habit {
-  date: string;
-  transport: string;
-  energy: string;
-  duration: string;
-  dayType: string;
-  notes: string;
-  createdAt: any;
-}
-
 const HistoryPage = () => {
   const { user } = useAuth();
   const [habits, setHabits] = useState<Habit[]>([]);
   const [filteredHabits, setFilteredHabits] = useState<Habit[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterTransport, setFilterTransport] = useState("all");
-  const [filterEnergy, setFilterEnergy] = useState("all");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filterTransport, setFilterTransport] = useState<string>("all");
+  const [filterEnergy, setFilterEnergy] = useState<string>("all");
   const [viewMode, setViewMode] = useState<"grid" | "list">("list");
 
   useEffect(() => {

@@ -2,6 +2,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { signOut } from "firebase/auth";
 import { auth } from "../../../data/FirebaseConfig";
 import { NavLink } from "react-router-dom";
+import type { NavItem } from "../../../types";
 import { 
   LogOut, 
   User, 
@@ -18,8 +19,8 @@ import { useState } from "react";
 
 const SidebarHorizontal = () => {
   const { user } = useAuth();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState<boolean>(false);
 
   const handleLogout = async () => {
     try {
@@ -29,7 +30,7 @@ const SidebarHorizontal = () => {
     }
   };
 
-  const navItems = [
+  const navItems: NavItem[] = [
     { to: "/dashboard", icon: LayoutDashboard, label: "Dashboard", color: "#3b82f6" },
     { to: "/habits", icon: PenLine, label: "Registrar", color: "#10b981" },
     { to: "/history", icon: History, label: "Histórico", color: "#f59e0b" },

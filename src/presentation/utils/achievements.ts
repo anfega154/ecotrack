@@ -1,30 +1,4 @@
-// Definición de badges/insignias
-export interface Badge {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  requirement: number;
-  category: "transport" | "energy" | "streak" | "general";
-  unlocked: boolean;
-  progress: number;
-}
-
-// Definición de nivel de usuario
-export interface UserLevel {
-  level: number;
-  title: string;
-  xp: number;
-  xpForNext: number;
-  percentage: number;
-}
-
-// Definición de racha
-export interface Streak {
-  current: number;
-  longest: number;
-  lastDate: string | null;
-}
+import type { Badge, UserLevel, Streak } from "../../types";
 
 // Todos los badges disponibles
 export const ALL_BADGES: Omit<Badge, "unlocked" | "progress">[] = [
@@ -227,7 +201,7 @@ export const calculateLevel = (xp: number): UserLevel => {
 };
 
 // Calcular XP basado en hábitos
-export const calculateXP = (habits: any[]): number => {
+export const calculateXP = (habits: Array<{ transport: string; energy: string }>): number => {
   let xp = 0;
 
   habits.forEach((habit) => {
@@ -261,7 +235,7 @@ export const calculateXP = (habits: any[]): number => {
 };
 
 // Calcular racha actual
-export const calculateStreak = (habits: any[]): Streak => {
+export const calculateStreak = (habits: Array<{ date: string }>): Streak => {
   if (habits.length === 0) {
     return { current: 0, longest: 0, lastDate: null };
   }
@@ -328,7 +302,7 @@ export const calculateStreak = (habits: any[]): Streak => {
 };
 
 // Calcular badges desbloqueados
-export const calculateBadges = (habits: any[]): Badge[] => {
+export const calculateBadges = (habits: Array<{ transport: string; energy: string; date: string }>): Badge[] => {
   const bikeCount = habits.filter((h) => h.transport === "bici").length;
   const publicCount = habits.filter((h) => h.transport === "publico").length;
   const ecoTransportCount = bikeCount + publicCount;

@@ -12,17 +12,17 @@ import {
 const HabitsPage = () => {
   const { user } = useAuth();
 
-  const [transport, setTransport] = useState("");
-  const [energy, setEnergy] = useState("");
+  const [transport, setTransport] = useState<string>("");
+  const [energy, setEnergy] = useState<string>("");
   const [date, setDate] = useState<string>(() => {
     const today = new Date().toISOString().split("T")[0];
     return today;
   });
-  const [duration, setDuration] = useState("");
-  const [dayType, setDayType] = useState("");
-  const [notes, setNotes] = useState("");
-  const [message, setMessage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [duration, setDuration] = useState<string>("");
+  const [dayType, setDayType] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const getEcoTip = () => {
     if (transport === "carro")

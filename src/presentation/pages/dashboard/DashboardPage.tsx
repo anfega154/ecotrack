@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../data/FirebaseConfig";
 import { useAuth } from "../../hooks/useAuth";
+import type { Habit, ChartData } from "../../../types";
 import {
   PieChart,
   Pie,
@@ -45,9 +46,9 @@ import {
 
 const DashboardPage = () => {
   const { user } = useAuth();
-  const [habits, setHabits] = useState<any[]>([]);
-  const [recommendation, setRecommendation] = useState("");
-  const [impactLevel, setImpactLevel] = useState("");
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [recommendation, setRecommendation] = useState<string>("");
+  const [impactLevel, setImpactLevel] = useState<string>("");
 
   const COLORS = ["#16a34a", "#86efac", "#15803d", "#bbf7d0"];
 
@@ -56,14 +57,14 @@ const DashboardPage = () => {
     const fetchHabits = async () => {
       const q = query(collection(db, "habits"), where("uid", "==", user.uid));
       const querySnapshot = await getDocs(q);
-      const habitsData = querySnapshot.docs.map((doc) => doc.data());
+      const habitsData = querySnapshot.docs.map((doc) => doc.data()) as Habit[];
       setHabits(habitsData);
       analyzeHabits(habitsData);
     };
     fetchHabits();
   }, [user]);
 
-  const analyzeHabits = (habits: any[]) => {
+  const analyzeHabits = (habits: Habit[]) => {
     if (!habits.length) return;
 
     const carCount = habits.filter((h) => h.transport === "carro").length;
@@ -87,14 +88,14 @@ const DashboardPage = () => {
       setRecommendation("🌱 ¡Excelente trabajo! Tus hábitos son sostenibles, sigue así.");
   };
 
-  const transportChart = [
+  const transportChart: ChartData[] = [
     { name: "Carro", value: habits.filter((h) => h.transport === "carro").length },
     { name: "Moto", value: habits.filter((h) => h.transport === "moto").length },
     { name: "Bici", value: habits.filter((h) => h.transport === "bici").length },
     { name: "Público", value: habits.filter((h) => h.transport === "publico").length },
   ];
 
-  const energyChart = [
+  const energyChart: ChartData[] = [
     { name: "Pocas horas", value: habits.filter((h) => h.energy === "poco").length },
     { name: "Medias horas", value: habits.filter((h) => h.energy === "medio").length },
     { name: "Muchas horas", value: habits.filter((h) => h.energy === "mucho").length },
@@ -109,7 +110,7 @@ const DashboardPage = () => {
   const motoDays = habits.filter((h) => h.transport === "moto").length;
   
   const laboralDays = habits.filter((h) => h.dayType === "laboral").length;
-  const weekendDays = habits.filter((h) => h.dayType === "fin de semana").length;
+  const weekendDays = habits.filter((h) => h.dayType === "finde").length;
   
   const highEnergyDays = habits.filter((h) => h.energy === "mucho").length;
   const mediumEnergyDays = habits.filter((h) => h.energy === "medio").length;

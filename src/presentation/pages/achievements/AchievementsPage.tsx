@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { db } from "../../../data/FirebaseConfig";
 import { useAuth } from "../../hooks/useAuth";
+import type { Badge, UserLevel, Streak } from "../../../types";
 import {
   Trophy,
   Award,
@@ -17,16 +18,15 @@ import {
   calculateLevel,
   calculateXP,
   calculateStreak,
-  type Badge,
 } from "../../utils/achievements";
 
 const AchievementsPage = () => {
   const { user } = useAuth();
-  const [habits, setHabits] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [habits, setHabits] = useState<Array<{ transport: string; energy: string; date: string }>>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const [badges, setBadges] = useState<Badge[]>([]);
-  const [userLevel, setUserLevel] = useState<any>(null);
-  const [streak, setStreak] = useState<any>(null);
+  const [userLevel, setUserLevel] = useState<UserLevel | null>(null);
+  const [streak, setStreak] = useState<Streak | null>(null);
   const [filterCategory, setFilterCategory] = useState<string>("all");
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const AchievementsPage = () => {
       try {
         const q = query(collection(db, "habits"), where("uid", "==", user.uid));
         const querySnapshot = await getDocs(q);
-        const habitsData = querySnapshot.docs.map((doc) => doc.data());
+        const habitsData = querySnapshot.docs.map((doc) => doc.data()) as Array<{ transport: string; energy: string; date: string }>;
         setHabits(habitsData);
 
         // Calcular logros
